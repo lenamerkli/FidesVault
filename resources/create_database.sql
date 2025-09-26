@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS used_ids (
+    id TEXT PRIMARY KEY,
+    created TEXT NOT NULL
+);
