@@ -26,12 +26,15 @@
 
       <div class="form-row">
         <mat-form-field appearance="outline">
-          <mat-label>Date of Birth</mat-label>
-          <input matInput [matDatepicker]="picker" formControlName="dateOfBirth">
-          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-          @if (accountForm.get('dateOfBirth')?.hasError('required')) {
-            <mat-error>Date of birth is required</mat-error>
+          <mat-label>Gender</mat-label>
+          <mat-select formControlName="gender">
+            <mat-option value="">Select your gender</mat-option>
+            @for (option of genderOptions; track option.value) {
+              <mat-option [value]="option.value">{{ option.label }}</mat-option>
+            }
+          </mat-select>
+          @if (accountForm.get('gender')?.hasError('required')) {
+            <mat-error>Gender is required</mat-error>
           }
         </mat-form-field>
 
@@ -51,15 +54,12 @@
 
       <div class="form-row">
         <mat-form-field appearance="outline">
-          <mat-label>Gender</mat-label>
-          <mat-select formControlName="gender">
-            <mat-option value="">Select your gender</mat-option>
-            @for (option of genderOptions; track option.value) {
-              <mat-option [value]="option.value">{{ option.label }}</mat-option>
-            }
-          </mat-select>
-          @if (accountForm.get('gender')?.hasError('required')) {
-            <mat-error>Gender is required</mat-error>
+          <mat-label>Date of Birth</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="dateOfBirth">
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          @if (accountForm.get('dateOfBirth')?.hasError('required')) {
+            <mat-error>Date of birth is required</mat-error>
           }
         </mat-form-field>
 

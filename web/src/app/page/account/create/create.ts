@@ -238,7 +238,7 @@ export class Create implements OnInit {
           `Title: ${this.getTitleLabel(formData.title)}\n` +
           `First Name: ${formData.firstName}\n` +
           `Last Name: ${formData.lastName}\n` +
-          `Date of Birth: ${formData.dateOfBirth.toLocaleDateString()}\n` +
+          `Date of Birth: ${formData.dateOfBirth.toISOString().split('T')[0]}\n` +
           `Gender: ${this.getGenderLabel(formData.gender)}\n` +
           `Country: ${this.getCountryName(formData.country)}`);
   }
