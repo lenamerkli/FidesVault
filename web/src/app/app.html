@@ -1,10 +1,11 @@
 <div class="app">
-  <header class="app-header">
-    <div class="header-content">
-      <h1>FidesVault</h1>
-      <app-language-switcher></app-language-switcher>
-    </div>
-  </header>
+  <mat-toolbar class="app-header">
+    <span>
+      FidesVault
+    </span>
+    <span class="spacer"></span>
+    <app-language-switcher></app-language-switcher>
+  </mat-toolbar>
   <div class="router">
     <router-outlet></router-outlet>
   </div>
