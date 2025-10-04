@@ -1,0 +1,175 @@
+.create-account-form {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+
+  mat-card {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+
+    mat-card-header {
+      margin-bottom: 1.5rem;
+
+      mat-card-title {
+        font-size: 1.5rem;
+        font-weight: 500;
+        color: #333;
+      }
+
+      mat-card-subtitle {
+        color: #666;
+        font-size: 0.9rem;
+      }
+    }
+
+    mat-card-content {
+      .form-row {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+
+        @media (max-width: 768px) {
+          flex-direction: column;
+          gap: 0;
+        }
+
+        mat-form-field {
+          flex: 1;
+
+          &:first-child {
+            margin-right: 0.5rem;
+          }
+
+          &:last-child {
+            margin-left: 0.5rem;
+          }
+
+          @media (max-width: 768px) {
+            margin: 0;
+            margin-bottom: 1rem;
+
+            &:first-child,
+            &:last-child {
+              margin: 0;
+            }
+          }
+        }
+      }
+
+      // Style for individual form fields that don't need the row layout
+      mat-form-field:not(.form-row mat-form-field) {
+        width: 100%;
+        margin-bottom: 1rem;
+      }
+    }
+
+    mat-card-actions {
+      padding: 1rem 1.5rem 1.5rem;
+      margin-top: 1rem;
+
+      button {
+        min-width: 120px;
+        height: 40px;
+        border-radius: 4px;
+        font-weight: 500;
+
+        &[disabled] {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+}
+
+// Global form field styling
+mat-form-field {
+  .mat-mdc-form-field-subscript-wrapper {
+    margin-top: 0.5rem;
+  }
+
+  .mat-mdc-form-field-error {
+    font-size: 0.75rem;
+    color: #f44336;
+  }
+}
+
+// Date picker specific styling
+mat-datepicker-toggle {
+  color: #666;
+
+  &:hover {
+    color: #333;
+  }
+}
+
+// Select dropdown styling
+mat-select {
+  .mat-mdc-select-arrow {
+    color: #666;
+  }
+}
+
+// Responsive design improvements
+@media (max-width: 480px) {
+  .create-account-form {
+    margin: 1rem auto;
+    padding: 0 0.5rem;
+
+    mat-card {
+      mat-card-header {
+        mat-card-title {
+          font-size: 1.25rem;
+        }
+      }
+
+      mat-card-content {
+        .form-row {
+          margin-bottom: 0.5rem;
+        }
+      }
+
+      mat-card-actions {
+        padding: 0.75rem 1rem 1rem;
+
+        button {
+          width: 100%;
+          min-width: auto;
+        }
+      }
+    }
+  }
+}
+
+// Focus states for better accessibility
+mat-form-field.mat-focused {
+  .mat-mdc-form-field-label {
+    color: #1976d2;
+  }
+}
+
+// Loading state styling (for future use)
+.form-loading {
+  opacity: 0.7;
+  pointer-events: none;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #1976d2;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
