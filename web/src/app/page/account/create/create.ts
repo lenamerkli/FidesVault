@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -8,14 +8,24 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+import {MatCheckbox} from '@angular/material/checkbox';
+import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core';
+import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common';
 
 export interface AccountFormData {
   firstName: string;
   lastName: string;
+  email: string;
+  password: string;
+  repeatPassword: string;
   dateOfBirth: Date;
   title: string;
   gender: string;
   country: string;
+  legalNameDifferent: boolean;
+  legalFirstName?: string;
+  legalLastName?: string;
+  legalGender?: string;
 }
 
 export interface SelectOption {
@@ -34,13 +44,18 @@ export interface SelectOption {
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatButtonModule
+    MatButtonModule,
+    MatCheckbox,
   ],
   templateUrl: './create.html',
   styleUrl: './create.scss'
 })
 export class Create implements OnInit {
   accountForm!: FormGroup;
+
+  // Password strength properties
+  ratingMessage: string = '';
+  passwordStrength: 'very-weak' | 'weak' | 'acceptable' | 'strong' | '' = '';
 
   // Constants for form options
   readonly titleOptions: SelectOption[] = [
@@ -198,7 +213,15 @@ export class Create implements OnInit {
     { value: 'ZW', label: 'Zimbabwe' }
   ].sort((a, b) => a.label.localeCompare(b.label));
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder) {
+    // Configure zxcvbn with common language support
+    zxcvbnOptions.setOptions({
+      dictionary: {
+        ...zxcvbnCommonPackage.dictionary,
+      },
+      graphs: zxcvbnCommonPackage.adjacencyGraphs,
+    });
+  }
 
   ngOnInit(): void {
     this.initializeForm();
@@ -208,11 +231,204 @@ export class Create implements OnInit {
     this.accountForm = this.formBuilder.group({
       firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, this.passwordStrengthValidator]],
+      repeatPassword: ['', [Validators.required]],
       dateOfBirth: ['', [Validators.required]],
       title: ['', [Validators.required]],
       gender: ['', [Validators.required]],
-      country: ['', [Validators.required]]
+      country: ['', [Validators.required]],
+      legalNameDifferent: [false],
+      legalFirstName: [''],
+      legalLastName: [''],
+      legalGender: ['']
+    }, { validators: this.passwordMatchValidator });
+
+    // Set up autofill logic for legal name fields
+    this.setupLegalNameAutofill();
+
+    // Set up password confirmation validation
+    this.setupPasswordConfirmation();
+
+    // Set up password strength checking
+    this.setupPasswordStrengthChecking();
+  }
+
+  private passwordMatchValidator(form: FormGroup) {
+    const password = form.get('password');
+    const repeatPassword = form.get('repeatPassword');
+
+    if (password && repeatPassword && password.value !== repeatPassword.value) {
+      return { passwordMismatch: true };
+    }
+
+    return null;
+  }
+
+  private passwordStrengthValidator(control: AbstractControl): ValidationErrors | null {
+    const password = control.value;
+
+    if (!password) {
+      return null;
+    }
+
+    // Use zxcvbn to check password strength without user inputs for validation
+    // The updateRating method will use user inputs for the visual indicator
+    const result = zxcvbn(password);
+
+    // Only allow passwords that are at least "acceptable" (guessesLog10 >= 14)
+    if (result.guessesLog10 < 14) {
+      return { passwordTooWeak: true };
+    }
+
+    return null;
+  }
+
+  private setupPasswordConfirmation(): void {
+    const passwordControl = this.accountForm.get('password');
+    const repeatPasswordControl = this.accountForm.get('repeatPassword');
+
+    if (passwordControl && repeatPasswordControl) {
+      // Watch for changes to password and validate repeat password
+      passwordControl.valueChanges.subscribe(() => {
+        if (repeatPasswordControl.value) {
+          repeatPasswordControl.updateValueAndValidity();
+        }
+      });
+
+      // Watch for changes to repeat password and validate match
+      repeatPasswordControl.valueChanges.subscribe(() => {
+        if (passwordControl.value) {
+          repeatPasswordControl.updateValueAndValidity();
+        }
+      });
+    }
+  }
+
+  private setupPasswordStrengthChecking(): void {
+    const passwordControl = this.accountForm.get('password');
+
+    if (passwordControl) {
+      passwordControl.valueChanges.subscribe(value => {
+        this.updateRating();
+      });
+    }
+  }
+
+  private updateRating(): void {
+    const password = this.accountForm.get('password')?.value;
+
+    if (!password) {
+      this.ratingMessage = '';
+      this.passwordStrength = '';
+      return;
+    }
+
+    // Get user inputs for zxcvbn (excluding password field)
+    const userInputs = this.getUserInputs();
+
+    // Use zxcvbn to analyze password strength
+    const result = zxcvbn(password, userInputs);
+
+    // Update rating based on guessesLog10
+    if (result.guessesLog10 < 8) {
+      this.ratingMessage = 'Very weak';
+      this.passwordStrength = 'very-weak';
+    } else if (result.guessesLog10 < 16) {
+      this.ratingMessage = 'Weak';
+      this.passwordStrength = 'weak';
+    } else if (result.guessesLog10 < 24) {
+      this.ratingMessage = 'Acceptable';
+      this.passwordStrength = 'acceptable';
+    } else {
+      this.ratingMessage = 'Strong';
+      this.passwordStrength = 'strong';
+    }
+  }
+
+  private getUserInputs(): string[] {
+    const inputs: string[] = [];
+
+    if (!this.accountForm) {
+      return inputs;
+    }
+
+    const formValues = this.accountForm.value;
+
+    // Add all form fields except password and repeatPassword
+    Object.keys(formValues).forEach(key => {
+      if (key !== 'password' && key !== 'repeatPassword' && formValues[key]) {
+        inputs.push(formValues[key].toString());
+      }
     });
+
+    return inputs;
+  }
+
+  private setupLegalNameAutofill(): void {
+    // Watch for changes to the legal name checkbox
+    this.accountForm.get('legalNameDifferent')?.valueChanges.subscribe(checked => {
+      if (checked) {
+        // When checkbox is checked, autofill legal name fields with current values
+        const firstName = this.accountForm.get('firstName')?.value;
+        const lastName = this.accountForm.get('lastName')?.value;
+        const gender = this.accountForm.get('gender')?.value;
+
+        this.accountForm.patchValue({
+          legalFirstName: firstName,
+          legalLastName: lastName,
+          legalGender: gender
+        });
+
+        // Add required validation to legal name fields
+        this.addLegalNameValidation();
+      } else {
+        // Remove required validation when checkbox is unchecked
+        this.removeLegalNameValidation();
+      }
+    });
+  }
+
+  private addLegalNameValidation(): void {
+    const legalFirstNameControl = this.accountForm.get('legalFirstName');
+    const legalLastNameControl = this.accountForm.get('legalLastName');
+    const legalGenderControl = this.accountForm.get('legalGender');
+
+    if (legalFirstNameControl) {
+      legalFirstNameControl.setValidators([Validators.required, Validators.minLength(2), Validators.maxLength(50)]);
+      legalFirstNameControl.updateValueAndValidity();
+    }
+
+    if (legalLastNameControl) {
+      legalLastNameControl.setValidators([Validators.required, Validators.minLength(2), Validators.maxLength(50)]);
+      legalLastNameControl.updateValueAndValidity();
+    }
+
+    if (legalGenderControl) {
+      legalGenderControl.setValidators([Validators.required]);
+      legalGenderControl.updateValueAndValidity();
+    }
+  }
+
+  private removeLegalNameValidation(): void {
+    const legalFirstNameControl = this.accountForm.get('legalFirstName');
+    const legalLastNameControl = this.accountForm.get('legalLastName');
+    const legalGenderControl = this.accountForm.get('legalGender');
+
+    if (legalFirstNameControl) {
+      legalFirstNameControl.clearValidators();
+      legalFirstNameControl.updateValueAndValidity();
+    }
+
+    if (legalLastNameControl) {
+      legalLastNameControl.clearValidators();
+      legalLastNameControl.updateValueAndValidity();
+    }
+
+    if (legalGenderControl) {
+      legalGenderControl.clearValidators();
+      legalGenderControl.updateValueAndValidity();
+    }
   }
 
   onSubmit(): void {
@@ -235,6 +451,7 @@ export class Create implements OnInit {
     // For demonstration purposes, we'll show an alert
     // In a real application, you would navigate to a success page or show a success message
     alert('Account creation form submitted successfully!\n\n' +
+          `Email: ${formData.email}\n` +
           `Title: ${this.getTitleLabel(formData.title)}\n` +
           `First Name: ${formData.firstName}\n` +
           `Last Name: ${formData.lastName}\n` +
@@ -268,8 +485,15 @@ export class Create implements OnInit {
   // Getter methods for template access
   get firstName() { return this.accountForm.get('firstName'); }
   get lastName() { return this.accountForm.get('lastName'); }
+  get email() { return this.accountForm.get('email'); }
+  get password() { return this.accountForm.get('password'); }
+  get repeatPassword() { return this.accountForm.get('repeatPassword'); }
   get dateOfBirth() { return this.accountForm.get('dateOfBirth'); }
   get title() { return this.accountForm.get('title'); }
   get gender() { return this.accountForm.get('gender'); }
   get country() { return this.accountForm.get('country'); }
+  get legalNameDifferent() { return this.accountForm.get('legalNameDifferent') as FormControl; }
+  get legalFirstName() { return this.accountForm.get('legalFirstName'); }
+  get legalLastName() { return this.accountForm.get('legalLastName'); }
+  get legalGender() { return this.accountForm.get('legalGender'); }
 }

@@ -173,3 +173,62 @@ mat-form-field.mat-focused {
     transform: rotate(360deg);
   }
 }
+
+// Password strength indicator styling
+.password-strength {
+  margin-top: 0.5rem;
+
+  .strength-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    border-left: 4px solid;
+
+    .strength-label {
+      font-weight: 500;
+      color: #333;
+      font-size: 0.875rem;
+    }
+
+    .strength-value {
+      font-weight: 600;
+      font-size: 0.875rem;
+
+      &.strength-very-weak {
+        color: #d32f2f; // Red
+      }
+
+      &.strength-weak {
+        color: #f57c00; // Orange
+      }
+
+      &.strength-acceptable {
+        color: #fbc02d; // Yellow
+      }
+
+      &.strength-strong {
+        color: #388e3c; // Green
+      }
+    }
+
+    // Border colors matching the text colors
+    &.strength-very-weak {
+      border-left-color: #d32f2f;
+    }
+
+    &.strength-weak {
+      border-left-color: #f57c00;
+    }
+
+    &.strength-acceptable {
+      border-left-color: #fbc02d;
+    }
+
+    &.strength-strong {
+      border-left-color: #388e3c;
+    }
+  }
+}

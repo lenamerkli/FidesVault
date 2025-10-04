@@ -52,6 +52,49 @@
         </mat-form-field>
       </div>
 
+      <!-- Legal name checkbox -->
+      <div class="form-row">
+        <mat-checkbox [formControl]="legalNameDifferent" i18n="@@createAccount.legalNameDifferent.label">
+          My legal name and/or gender is different
+        </mat-checkbox>
+      </div>
+
+      <!-- Legal name fields - shown when checkbox is checked -->
+      @if (accountForm.get('legalNameDifferent')?.value) {
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label i18n="@@createAccount.legalFirstName.label">Legal First Name</mat-label>
+            <input matInput formControlName="legalFirstName" placeholder="Enter your legal first name" i18n-placeholder="@@createAccount.legalFirstName.placeholder">
+            @if (accountForm.get('legalFirstName')?.hasError('required')) {
+              <mat-error i18n="@@createAccount.legalFirstName.required">Legal first name is required</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label i18n="@@createAccount.legalLastName.label">Legal Last Name</mat-label>
+            <input matInput formControlName="legalLastName" placeholder="Enter your legal last name" i18n-placeholder="@@createAccount.legalLastName.placeholder">
+            @if (accountForm.get('legalLastName')?.hasError('required')) {
+              <mat-error i18n="@@createAccount.legalLastName.required">Legal last name is required</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label i18n="@@createAccount.legalGender.label">Legal Gender</mat-label>
+            <mat-select formControlName="legalGender">
+              <mat-option value="" i18n="@@createAccount.legalGender.select">Select your legal gender</mat-option>
+              @for (option of genderOptions; track option.value) {
+                <mat-option [value]="option.value">{{ option.label }}</mat-option>
+              }
+            </mat-select>
+            @if (accountForm.get('legalGender')?.hasError('required')) {
+              <mat-error i18n="@@createAccount.legalGender.required">Legal gender is required</mat-error>
+            }
+          </mat-form-field>
+        </div>
+      }
+
       <div class="form-row">
         <mat-form-field appearance="outline">
           <mat-label i18n="@@createAccount.dateOfBirth.label">Date of Birth</mat-label>
@@ -76,6 +119,53 @@
           }
         </mat-form-field>
       </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label i18n="@@createAccount.email.label">Email</mat-label>
+          <input matInput formControlName="email" type="email" placeholder="Enter your email address" i18n-placeholder="@@createAccount.email.placeholder">
+          @if (accountForm.get('email')?.hasError('required')) {
+            <mat-error i18n="@@createAccount.email.required">Email is required</mat-error>
+          }
+          @if (accountForm.get('email')?.hasError('email')) {
+            <mat-error i18n="@@createAccount.email.invalid">Please enter a valid email address</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label i18n="@@createAccount.password.label">Password</mat-label>
+          <input matInput formControlName="password" type="password" placeholder="Enter your password" i18n-placeholder="@@createAccount.password.placeholder">
+          @if (accountForm.get('password')?.hasError('required')) {
+            <mat-error i18n="@@createAccount.password.required">Password is required</mat-error>
+          }
+          @if (accountForm.get('password')?.hasError('passwordTooWeak')) {
+            <mat-error i18n="@@createAccount.password.tooWeak">Password is too weak. Please choose a stronger password.</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label i18n="@@createAccount.repeatPassword.label">Repeat Password</mat-label>
+          <input matInput formControlName="repeatPassword" type="password" placeholder="Repeat your password" i18n-placeholder="@@createAccount.repeatPassword.placeholder">
+          @if (accountForm.get('repeatPassword')?.hasError('required')) {
+            <mat-error i18n="@@createAccount.repeatPassword.required">Please repeat your password</mat-error>
+          }
+          @if (accountForm.get('repeatPassword')?.hasError('passwordMismatch')) {
+            <mat-error i18n="@@createAccount.repeatPassword.mismatch">Passwords do not match</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <!-- Password strength indicator -->
+      @if (ratingMessage) {
+        <div class="form-row password-strength">
+          <div class="strength-indicator">
+            <span class="strength-label" i18n="@@createAccount.password.strength">Password Strength:</span>
+            <span class="strength-value" [ngClass]="'strength-' + passwordStrength">{{ ratingMessage }}</span>
+          </div>
+        </div>
+      }
     </mat-card-content>
 
     <mat-card-actions align="end">
