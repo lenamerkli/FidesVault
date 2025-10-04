@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en-CH" target-language="fr-CH" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="createAccount.title" datatype="html">
+        <source>Create Account</source>
+        <target>Créer un compte</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">4,5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.subtitle" datatype="html">
+        <source>Please fill in your personal information</source>
+        <target>Veuillez remplir vos informations personnelles</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">5,6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.firstName.label" datatype="html">
+        <source>First Name</source>
+        <target>Prénom</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">11,12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.firstName.placeholder" datatype="html">
+        <source>Enter your first name</source>
+        <target>Entrez votre prénom</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.firstName.required" datatype="html">
+        <source>First name is required</source>
+        <target>Le prénom est obligatoire</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">14,16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.lastName.label" datatype="html">
+        <source>Last Name</source>
+        <target>Nom de famille</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">19,20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.lastName.placeholder" datatype="html">
+        <source>Enter your last name</source>
+        <target>Entrez votre nom de famille</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.lastName.required" datatype="html">
+        <source>Last name is required</source>
+        <target>Le nom de famille est obligatoire</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">22,24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.gender.label" datatype="html">
+        <source>Gender</source>
+        <target>Sexe</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">29,30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.gender.select" datatype="html">
+        <source>Select your gender</source>
+        <target>Sélectionnez votre sexe</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">31,32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.gender.required" datatype="html">
+        <source>Gender is required</source>
+        <target>Le sexe est obligatoire</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">37,39</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.title.label" datatype="html">
+        <source>Title</source>
+        <target>Titre</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">42,43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.title.select" datatype="html">
+        <source>Select your title</source>
+        <target>Sélectionnez votre titre</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">44,45</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.title.required" datatype="html">
+        <source>Title is required</source>
+        <target>Le titre est obligatoire</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">50,52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.dateOfBirth.label" datatype="html">
+        <source>Date of Birth</source>
+        <target>Date de naissance</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">57,58</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.dateOfBirth.required" datatype="html">
+        <source>Date of birth is required</source>
+        <target>La date de naissance est obligatoire</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">62,64</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.country.label" datatype="html">
+        <source>Country</source>
+        <target>Pays</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">67,68</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.country.select" datatype="html">
+        <source>Select your country</source>
+        <target>Sélectionnez votre pays</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">69,70</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.country.required" datatype="html">
+        <source>Country is required</source>
+        <target>Le pays est obligatoire</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">75,77</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.submit" datatype="html">
+        <source> Create Account </source>
+        <target> Créer un compte </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">83,85</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.success.message" datatype="html">
+        <source>Account creation form submitted successfully!
+
+</source>
+        <target>Formulaire de création de compte soumis avec succès !
+
+</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.ts</context>
+          <context context-type="linenumber">237</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.success.title" datatype="html">
+        <source>Title: <x id="PH" equiv-text="this.getTitleLabel(formData.title)"/>
+</source>
+        <target>Titre : <x id="PH" equiv-text="this.getTitleLabel(formData.title)"/>
+</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.ts</context>
+          <context context-type="linenumber">238</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.success.firstName" datatype="html">
+        <source>First Name: <x id="PH" equiv-text="formData.firstName"/>
+</source>
+        <target>Prénom : <x id="PH" equiv-text="formData.firstName"/>
+</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.ts</context>
+          <context context-type="linenumber">239</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.success.lastName" datatype="html">
+        <source>Last Name: <x id="PH" equiv-text="formData.lastName"/>
+</source>
+        <target>Nom de famille : <x id="PH" equiv-text="formData.lastName"/>
+</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.ts</context>
+          <context context-type="linenumber">240</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.success.dateOfBirth" datatype="html">
+        <source>Date of Birth: <x id="PH" equiv-text="formData.dateOfBirth.toISOString().split('T')[0]"/>
+</source>
+        <target>Date de naissance : <x id="PH" equiv-text="formData.dateOfBirth.toISOString().split('T')[0]"/>
+</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.ts</context>
+          <context context-type="linenumber">241</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.success.gender" datatype="html">
+        <source>Gender: <x id="PH" equiv-text="this.getGenderLabel(formData.gender)"/>
+</source>
+        <target>Sexe : <x id="PH" equiv-text="this.getGenderLabel(formData.gender)"/>
+</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.ts</context>
+          <context context-type="linenumber">242</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.success.country" datatype="html">
+        <source>Country: <x id="PH" equiv-text="this.getCountryName(formData.country)"/></source>
+        <target>Pays : <x id="PH" equiv-text="this.getCountryName(formData.country)"/></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.ts</context>
+          <context context-type="linenumber">243</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

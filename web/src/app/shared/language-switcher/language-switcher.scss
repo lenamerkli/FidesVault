@@ -1,0 +1,52 @@
+.language-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 120px;
+  justify-content: space-between;
+
+  .flag {
+    font-size: 18px;
+  }
+
+  .name {
+    flex-grow: 1;
+    text-align: left;
+  }
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.language-menu {
+  .mat-mdc-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 48px;
+
+    &.active {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+
+    .flag {
+      font-size: 20px;
+      width: 24px;
+      text-align: center;
+    }
+
+    .name {
+      flex-grow: 1;
+    }
+
+    .check-icon {
+      color: #1976d2;
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
