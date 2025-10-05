@@ -232,3 +232,88 @@ mat-form-field.mat-focused {
     }
   }
 }
+
+// TOTP QR Code section styling
+.totp-section {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+
+  .totp-container {
+    h3 {
+      margin: 0 0 0.5rem 0;
+      color: #333;
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+
+    p {
+      margin: 0 0 1rem 0;
+      color: #666;
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    .qr-code-container {
+      display: flex;
+      justify-content: center;
+      margin: 1rem 0;
+      padding: 1rem;
+      background-color: #ffffff;
+      border-radius: 8px;
+      border: 2px solid #dee2e6;
+
+      canvas {
+        max-width: 100%;
+        height: auto;
+        border-radius: 4px;
+      }
+    }
+
+    .totp-info {
+      display: flex;
+      gap: 2rem;
+      margin-top: 1rem;
+      font-size: 0.875rem;
+
+      @media (max-width: 768px) {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      p {
+        margin: 0;
+        color: #495057;
+
+        strong {
+          color: #333;
+        }
+      }
+    }
+  }
+}
+
+// Responsive adjustments for TOTP section
+@media (max-width: 768px) {
+  .totp-section {
+    margin: 1.5rem 0;
+    padding: 1rem;
+
+    .totp-container {
+      .qr-code-container {
+        padding: 0.75rem;
+
+        canvas {
+          width: 150px !important;
+          height: 150px !important;
+        }
+      }
+
+      .totp-info {
+        text-align: center;
+      }
+    }
+  }
+}

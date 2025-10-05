@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { FormBuilder, FormGroup, FormControl, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -11,6 +12,12 @@ import { CommonModule } from '@angular/common';
 import {MatCheckbox} from '@angular/material/checkbox';
 import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core';
 import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common';
+import { HttpClient } from '@angular/common/http';
+import {map} from 'rxjs';
+import {pbkdf2HmacUrlSafe} from '../../../utils/hash';
+import {Fernet} from 'fernet-ts';
+import * as QRCode from 'qrcode';
+import {API_BASE_URL} from '../../../utils/api_url';
 
 export interface AccountFormData {
   firstName: string;
@@ -26,11 +33,17 @@ export interface AccountFormData {
   legalFirstName?: string;
   legalLastName?: string;
   legalGender?: string;
+  identityVerificationInfo?: string;
 }
 
 export interface SelectOption {
   value: string;
   label: string;
+}
+
+export interface ResponseDTO {
+  error?: string;
+  success?: string;
 }
 
 @Component({
@@ -50,12 +63,17 @@ export interface SelectOption {
   templateUrl: './create.html',
   styleUrl: './create.scss'
 })
-export class Create implements OnInit {
+export class Create implements OnInit, AfterViewInit {
   accountForm!: FormGroup;
 
   // Password strength properties
   ratingMessage: string = '';
   passwordStrength: 'very-weak' | 'weak' | 'acceptable' | 'strong' | '' = '';
+
+  totp: string = '';
+  totpIssuer: string = 'FidesVault';
+
+  @ViewChild('qrCodeCanvas', { static: false }) qrCodeCanvas!: ElementRef<HTMLCanvasElement>;
 
   // Constants for form options
   readonly titleOptions: SelectOption[] = [
@@ -213,7 +231,7 @@ export class Create implements OnInit {
     { value: 'ZW', label: 'Zimbabwe' }
   ].sort((a, b) => a.label.localeCompare(b.label));
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
     // Configure zxcvbn with common language support
     zxcvbnOptions.setOptions({
       dictionary: {
@@ -225,6 +243,23 @@ export class Create implements OnInit {
 
   ngOnInit(): void {
     this.initializeForm();
+    if (isPlatformBrowser(this.platformId)) {
+      this.http.post(API_BASE_URL + '/api/v1/account/create/totp', {}, { responseType: 'text' }).subscribe({
+        next: async (totp) => {
+          this.totp = totp;
+          // Generate QR code when TOTP secret is available
+          setTimeout(() => this.generateQRCode(), 100);
+        }, error: (error) => {
+          console.error('Error retrieving TOTP:', error);
+        }});
+    }
+  }
+
+  ngAfterViewInit(): void {
+    // Generate QR code if both TOTP and email are already available
+    if (this.totp && this.accountForm.get('email')?.value) {
+      this.generateQRCode().then();
+    }
   }
 
   private initializeForm(): void {
@@ -241,7 +276,8 @@ export class Create implements OnInit {
       legalNameDifferent: [false],
       legalFirstName: [''],
       legalLastName: [''],
-      legalGender: ['']
+      legalGender: [''],
+      identityVerificationInfo: ['']
     }, { validators: this.passwordMatchValidator });
 
     // Set up autofill logic for legal name fields
@@ -252,6 +288,9 @@ export class Create implements OnInit {
 
     // Set up password strength checking
     this.setupPasswordStrengthChecking();
+
+    // Set up email change watcher for QR code regeneration
+    this.setupEmailWatcher();
   }
 
   private passwordMatchValidator(form: FormGroup) {
@@ -311,6 +350,19 @@ export class Create implements OnInit {
     if (passwordControl) {
       passwordControl.valueChanges.subscribe(value => {
         this.updateRating();
+      });
+    }
+  }
+
+  private setupEmailWatcher(): void {
+    const emailControl = this.accountForm.get('email');
+
+    if (emailControl) {
+      emailControl.valueChanges.subscribe(value => {
+        // Regenerate QR code when email changes
+        if (this.totp && value) {
+          setTimeout(() => this.generateQRCode(), 100);
+        }
       });
     }
   }
@@ -432,32 +484,58 @@ export class Create implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.accountForm.valid) {
+    if (this.accountForm.valid && ['strong', 'acceptable'].includes(this.passwordStrength)) {
       const formData: AccountFormData = this.accountForm.value;
-      console.log('Form submitted with data:', formData);
-
-      // Here you would typically send the data to your backend service
-      // For now, we'll just log it and show a success message
-      this.handleFormSubmission(formData);
+      this.handleFormSubmission(formData).then();
     } else {
       this.markFormGroupTouched();
     }
   }
 
-  private handleFormSubmission(formData: AccountFormData): void {
-    // TODO: Implement actual API call to submit form data
-    console.log('Submitting account creation data:', formData);
-
-    // For demonstration purposes, we'll show an alert
-    // In a real application, you would navigate to a success page or show a success message
-    alert('Account creation form submitted successfully!\n\n' +
-          `Email: ${formData.email}\n` +
-          `Title: ${this.getTitleLabel(formData.title)}\n` +
-          `First Name: ${formData.firstName}\n` +
-          `Last Name: ${formData.lastName}\n` +
-          `Date of Birth: ${formData.dateOfBirth.toISOString().split('T')[0]}\n` +
-          `Gender: ${this.getGenderLabel(formData.gender)}\n` +
-          `Country: ${this.getCountryName(formData.country)}`);
+  private async handleFormSubmission(formData: AccountFormData): Promise<void> {
+    let data = {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      email: formData.email,
+      dateOfBirth: formData.dateOfBirth.toISOString().split('T')[0],
+      title: formData.title,
+      gender: formData.gender,
+      country: formData.country,
+      legalNameDifferent: formData.legalNameDifferent,
+      legalFirstName: formData.legalNameDifferent ? formData.legalFirstName : formData.firstName,
+      legalLastName: formData.legalNameDifferent ? formData.legalLastName : formData.lastName,
+      legalGender: formData.legalNameDifferent ? formData.legalGender : formData.gender,
+      additionalInformation: (formData.identityVerificationInfo?.length ?? 0) > 0 ? formData.identityVerificationInfo : 'None',
+    }
+    const password = formData.password;
+    this.http.post(API_BASE_URL + '/api/v1/account/create/salt', {}, { responseType: 'text' }).subscribe({
+    next: async (salt) => {
+      const hash = await pbkdf2HmacUrlSafe(password, salt, 100000, 256);
+      const key = await pbkdf2HmacUrlSafe('o7C@' + password + 'Lö§s', salt, 152734, 256);
+      const f = await Fernet.getInstance(key);
+      const cipher = await f.encrypt(JSON.stringify(data));
+      this.http.post<ResponseDTO>(API_BASE_URL + '/api/v1/account/create', JSON.stringify({
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        dateOfBirth: data.dateOfBirth,
+        title: data.title,
+        gender: data.gender,
+        country: data.country,
+        legalNameDifferent: data.legalNameDifferent,
+        legalFirstName: data.legalFirstName,
+        legalLastName: data.legalLastName,
+        legalGender: data.legalGender,
+        additionalInformation: data.additionalInformation,
+        password: hash,
+        cipher: cipher,
+        salt: salt,
+      }))
+    },
+    error: (error) => {
+      console.error('Error retrieving salt:', error);
+    }
+  });
   }
 
   private markFormGroupTouched(): void {
@@ -482,6 +560,46 @@ export class Create implements OnInit {
     return titleOption ? titleOption.label : titleValue;
   }
 
+  private generateTOTPUrl(): string {
+    const email = this.accountForm.get('email')?.value;
+    if (!this.totp || !email) {
+      return '';
+    }
+
+    // Generate TOTP URL for QR code
+    // Format: otpauth://totp/{issuer}:{label}?secret={secret}&issuer={issuer}
+    const encodedIssuer = encodeURIComponent(this.totpIssuer);
+    const encodedLabel = encodeURIComponent(email);
+    const encodedSecret = encodeURIComponent(this.totp);
+
+    return `otpauth://totp/${encodedIssuer}:${encodedLabel}?secret=${encodedSecret}&issuer=${encodedIssuer}`;
+  }
+
+  private async generateQRCode(): Promise<void> {
+    if (!this.qrCodeCanvas || !this.totp || !this.accountForm.get('email')?.value) {
+      return;
+    }
+
+    try {
+      const totpUrl = this.generateTOTPUrl();
+      if (!totpUrl) {
+        return;
+      }
+
+      // Generate QR code and render to canvas
+      await QRCode.toCanvas(this.qrCodeCanvas.nativeElement, totpUrl, {
+        width: 200,
+        margin: 2,
+        color: {
+          dark: '#000000',
+          light: '#FFFFFF'
+        }
+      });
+    } catch (error) {
+      console.error('Error generating QR code:', error);
+    }
+  }
+
   // Getter methods for template access
   get firstName() { return this.accountForm.get('firstName'); }
   get lastName() { return this.accountForm.get('lastName'); }
@@ -496,4 +614,5 @@ export class Create implements OnInit {
   get legalFirstName() { return this.accountForm.get('legalFirstName'); }
   get legalLastName() { return this.accountForm.get('legalLastName'); }
   get legalGender() { return this.accountForm.get('legalGender'); }
+  get identityVerificationInfo() { return this.accountForm.get('identityVerificationInfo'); }
 }

@@ -232,6 +232,246 @@
           <context context-type="linenumber">243</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="createAccount.email.label" datatype="html">
+        <source>Email</source>
+        <target>E-mail</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">95,96</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.email.placeholder" datatype="html">
+        <source>Enter your email address</source>
+        <target>Entrez votre adresse e-mail</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">97</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.email.required" datatype="html">
+        <source>Email is required</source>
+        <target>L'e-mail est obligatoire</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">98,100</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.email.invalid" datatype="html">
+        <source>Please enter a valid email address</source>
+        <target>Veuillez entrer une adresse e-mail valide</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">101,103</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.password.label" datatype="html">
+        <source>Password</source>
+        <target>Mot de passe</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">108,109</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.password.placeholder" datatype="html">
+        <source>Enter your password</source>
+        <target>Entrez votre mot de passe</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">110</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.password.required" datatype="html">
+        <source>Password is required</source>
+        <target>Le mot de passe est obligatoire</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">111,113</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.password.tooWeak" datatype="html">
+        <source>Password is too weak. Please choose a stronger password.</source>
+        <target>Le mot de passe est trop faible. Veuillez choisir un mot de passe plus fort.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">114,116</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.repeatPassword.label" datatype="html">
+        <source>Repeat Password</source>
+        <target>Répéter le mot de passe</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">119,120</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.repeatPassword.placeholder" datatype="html">
+        <source>Repeat your password</source>
+        <target>Répétez votre mot de passe</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">121</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.repeatPassword.required" datatype="html">
+        <source>Please repeat your password</source>
+        <target>Veuillez répéter votre mot de passe</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">122,124</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.repeatPassword.mismatch" datatype="html">
+        <source>Passwords do not match</source>
+        <target>Les mots de passe ne correspondent pas</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">125,127</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.password.strength" datatype="html">
+        <source>Password Strength:</source>
+        <target>Force du mot de passe :</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">133</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.totp.title" datatype="html">
+        <source>Two-Factor Authentication Setup</source>
+        <target>Configuration de l'authentification à deux facteurs</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">140</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.totp.description" datatype="html">
+        <source> Scan this QR code with your authenticator app (Google Authenticator, Authy, etc.) to set up two-factor authentication. </source>
+        <target> Scannez ce code QR avec votre application d'authentification (Google Authenticator, Authy, etc.) pour configurer l'authentification à deux facteurs. </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">141,143</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.totp.issuer" datatype="html">
+        <source>Issuer:</source>
+        <target>Émetteur :</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">147</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.totp.account" datatype="html">
+        <source>Account:</source>
+        <target>Compte :</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">148</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.identityVerificationInfo.label" datatype="html">
+        <source>Identity Verification Information</source>
+        <target>Informations de vérification d'identité</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">153,154</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.identityVerificationInfo.placeholder" datatype="html">
+        <source>Enter links, references, or other information to prove your identity (optional)</source>
+        <target>Entrez des liens, des références ou d'autres informations pour prouver votre identité (optionnel)</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">157</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.identityVerificationInfo.hint" datatype="html">
+        <source> You can include links to social media profiles, personal websites, or other verifiable information that helps establish your identity. </source>
+        <target> Vous pouvez inclure des liens vers des profils de réseaux sociaux, des sites web personnels ou d'autres informations vérifiables qui aident à établir votre identité. </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">161,163</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.legalNameDifferent.label" datatype="html">
+        <source> My legal name and/or gender is different </source>
+        <target> Mon nom légal et/ou mon sexe est différent </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">45</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.legalFirstName.label" datatype="html">
+        <source>Legal First Name</source>
+        <target>Prénom légal</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">49,50</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.legalFirstName.placeholder" datatype="html">
+        <source>Enter your legal first name</source>
+        <target>Entrez votre prénom légal</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">51</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.legalFirstName.required" datatype="html">
+        <source>Legal first name is required</source>
+        <target>Le prénom légal est obligatoire</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">52,54</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.legalLastName.label" datatype="html">
+        <source>Legal Last Name</source>
+        <target>Nom de famille légal</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">57,58</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.legalLastName.placeholder" datatype="html">
+        <source>Enter your legal last name</source>
+        <target>Entrez votre nom de famille légal</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">59</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.legalLastName.required" datatype="html">
+        <source>Legal last name is required</source>
+        <target>Le nom de famille légal est obligatoire</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">60,62</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.legalGender.label" datatype="html">
+        <source>Legal Gender</source>
+        <target>Sexe légal</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">67,68</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.legalGender.select" datatype="html">
+        <source>Select your legal gender</source>
+        <target>Sélectionnez votre sexe légal</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">70,71</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createAccount.legalGender.required" datatype="html">
+        <source>Legal gender is required</source>
+        <target>Le sexe légal est obligatoire</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/account/create/create.html</context>
+          <context context-type="linenumber">75,77</context>
+        </context-group>
+      </trans-unit>
     </body>
   </file>
 </xliff>

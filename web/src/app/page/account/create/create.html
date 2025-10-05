@@ -166,6 +166,40 @@
           </div>
         </div>
       }
+
+      <!-- TOTP QR Code Section -->
+      @if (totp && accountForm.get('email')?.value) {
+        <div class="form-row totp-section">
+          <div class="totp-container">
+            <h3 i18n="@@createAccount.totp.title">Two-Factor Authentication Setup</h3>
+            <p i18n="@@createAccount.totp.description">
+              Scan this QR code with your authenticator app (Google Authenticator, Authy, etc.) to set up two-factor authentication.
+            </p>
+            <div class="qr-code-container">
+              <canvas #qrCodeCanvas></canvas>
+            </div>
+            <div class="totp-info">
+              <p><strong i18n="@@createAccount.totp.issuer">Issuer:</strong> {{ totpIssuer }}</p>
+              <p><strong i18n="@@createAccount.totp.account">Account:</strong> {{ accountForm.get('email')?.value }}</p>
+            </div>
+          </div>
+        </div>
+      }
+
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label i18n="@@createAccount.identityVerificationInfo.label">Identity Verification Information</mat-label>
+          <textarea matInput
+                    formControlName="identityVerificationInfo"
+                    placeholder="Enter links, references, or other information to prove your identity (optional)"
+                    i18n-placeholder="@@createAccount.identityVerificationInfo.placeholder"
+                    rows="4">
+          </textarea>
+          <mat-hint i18n="@@createAccount.identityVerificationInfo.hint">
+            You can include links to social media profiles, personal websites, or other verifiable information that helps establish your identity.
+          </mat-hint>
+        </mat-form-field>
+      </div>
     </mat-card-content>
 
     <mat-card-actions align="end">
