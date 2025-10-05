@@ -7,3 +7,10 @@ CREATE TABLE IF NOT EXISTS ips (
     score INTEGER NOT NULL,
     description TEXT NOT NULL
 );
+CREATE TABLE IF NOT EXISTS users (
+    email TEXT PRIMARY KEY,
+    hash TEXT NOT NULL,
+    salt TEXT NOT NULL,
+    totp TEXT NOT NULL,
+    cipher TEXT NOT NULL
+)

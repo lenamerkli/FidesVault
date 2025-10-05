@@ -505,37 +505,36 @@ export class Create implements OnInit, AfterViewInit {
       legalFirstName: formData.legalNameDifferent ? formData.legalFirstName : formData.firstName,
       legalLastName: formData.legalNameDifferent ? formData.legalLastName : formData.lastName,
       legalGender: formData.legalNameDifferent ? formData.legalGender : formData.gender,
-      additionalInformation: (formData.identityVerificationInfo?.length ?? 0) > 0 ? formData.identityVerificationInfo : 'None',
     }
     const password = formData.password;
     this.http.post(API_BASE_URL + '/api/v1/account/create/salt', {}, { responseType: 'text' }).subscribe({
-    next: async (salt) => {
-      const hash = await pbkdf2HmacUrlSafe(password, salt, 100000, 256);
-      const key = await pbkdf2HmacUrlSafe('o7C@' + password + 'Lö§s', salt, 152734, 256);
-      const f = await Fernet.getInstance(key);
-      const cipher = await f.encrypt(JSON.stringify(data));
-      this.http.post<ResponseDTO>(API_BASE_URL + '/api/v1/account/create', JSON.stringify({
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email,
-        dateOfBirth: data.dateOfBirth,
-        title: data.title,
-        gender: data.gender,
-        country: data.country,
-        legalNameDifferent: data.legalNameDifferent,
-        legalFirstName: data.legalFirstName,
-        legalLastName: data.legalLastName,
-        legalGender: data.legalGender,
-        additionalInformation: data.additionalInformation,
-        password: hash,
-        cipher: cipher,
-        salt: salt,
-      }))
-    },
-    error: (error) => {
-      console.error('Error retrieving salt:', error);
-    }
-  });
+      next: async (salt) => {
+        const hash = await pbkdf2HmacUrlSafe(password, salt, 100000, 256);
+        const key = await pbkdf2HmacUrlSafe('o7C@' + password + 'Lö§s', salt, 152734, 256);
+        const f = await Fernet.getInstance(key);
+        const cipher = await f.encrypt(JSON.stringify(data));
+        this.http.post<ResponseDTO>(API_BASE_URL + '/api/v1/account/create', JSON.stringify({
+          firstName: data.firstName,
+          lastName: data.lastName,
+          email: data.email,
+          dateOfBirth: data.dateOfBirth,
+          title: data.title,
+          gender: data.gender,
+          country: data.country,
+          legalNameDifferent: data.legalNameDifferent,
+          legalFirstName: data.legalFirstName,
+          legalLastName: data.legalLastName,
+          legalGender: data.legalGender,
+          additionalInformation: (formData.identityVerificationInfo?.length ?? 0) > 0 ? formData.identityVerificationInfo : 'None',
+          password: hash,
+          cipher: cipher,
+          salt: salt,
+        }));
+      },
+      error: (error) => {
+        console.error('Error retrieving salt:', error);
+      }
+    });
   }
 
   private markFormGroupTouched(): void {

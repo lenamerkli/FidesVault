@@ -1,3 +1,4 @@
+from base64 import urlsafe_b64decode
 from base64 import urlsafe_b64encode
 from datetime import datetime
 from datetime import timedelta
@@ -9,6 +10,7 @@ from flask import Response
 from flask import request
 from flask import send_from_directory
 from flask import session
+from hashlib import pbkdf2_hmac
 from hashlib import sha3_512
 from ipaddress import ip_address
 from ipaddress import IPv4Address
@@ -24,6 +26,7 @@ from os import urandom
 from os.path import exists
 from os.path import join
 from pyotp import random_base32 as totp_random_base32
+from pyotp import TOTP
 from requests import request as requests_send
 from sqlite3 import connect as sqlite_connect
 from sqlite3 import Connection as SQLite_Connection
@@ -256,6 +259,34 @@ def r_api_v1_account_create():
     return {'success': 'Account awaiting approval'}, 200
 
 
+@app.route('/api/v1/account/login', methods=['POST'])
+def r_api_v1_account_login():
+    data = dict(request.get_json(force=True, silent=True))
+    if (data is None) or (not isinstance(data, dict)):
+        return {'error': 'Invalid request'}, 400
+    if not all(data.get(i, '') for i in ['email', 'code', 'password']):
+        return {'error': 'Invalid request'}, 400
+    error_message = {'error': 'e-mail not found, incorrect password or TOTP mismatch'}, 400
+    result = query_db('SELECT totp, hash, salt, cipher FROM users WHERE email=?', (data['email']), one=True)
+    if not result:
+        return error_message
+    if pbkdf2_hmac('sha3_512', data['password'].encode(), urlsafe_b64decode(result[2]), 100000) != result[1]:
+        return error_message
+    try:
+        totp = TOTP(result[0])
+        is_valid = totp.verify(data['code'])
+    except Exception as e:
+        print(e)
+        return error_message
+    if not is_valid:
+        return error_message
+    return {
+        'success': 'success',
+        'salt': result[2],
+        'cipher': result[3],
+    }
+
+
 @app.errorhandler(404)
 def error_handler_404(*_, **__):
     if DEVELOPMENT:
@@ -267,8 +298,7 @@ def error_handler_404(*_, **__):
             cookies=request.cookies,
             allow_redirects=True,
         )
-        excluded_headers = ['content-encoding', 'content-length', 'transfer-encoding',
-                            'connection']
+        excluded_headers = ['content-encoding', 'content-length', 'transfer-encoding', 'connection']
         headers = [
             (k, v) for k, v in res.raw.headers.items()
             if k.lower() not in excluded_headers
