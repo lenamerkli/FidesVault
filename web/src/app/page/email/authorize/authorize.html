@@ -1,0 +1,32 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title i18n="@@authorize.title">Authorize Application</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    @if (invalid) {
+      <p i18n="@@authorize.error">An error occurred. Please try again with a different link or contact the administrator of the website you want to authorize.</p>
+    }
+    @else if (token === null) {
+      <p i18n="@@authorize.loading">Please wait a moment while FidesVault loads.</p>
+    }
+    @else if (account !== null) {
+      <p i18n="@@authorize.confirm">Do you really want to authorize the application <i><b>{{token.getPreviewUrl()}}</b></i> and connect it to your account? Your email address will be shared.</p>
+      <p i18n="@@authorize.check">Make sure to check that you received this link from the respective website.</p>
+    } @else {
+      <p i18n="@@authorize.notLoggedIn">You must be logged in to authorize applications like <i>{{token.getPreviewUrl()}}</i>.</p>
+      <p i18n="@@authorize.noAccount">If you do not have an account yet, please register.</p>
+      <p i18n="@@authorize.retry">After logging in, please open the link again.</p>
+    }
+  </mat-card-content>
+  @if (account !== null && token !== null && !invalid) {
+    <mat-card-actions align="end">
+      <button mat-raised-button color="warn" (click)="authorize()" i18n="@@authorize.button.authorize">Authorize {{token.getPreviewUrl()}}</button>
+      <button mat-raised-button color="primary" (click)="cancel()" i18n="@@authorize.button.cancel">Cancel</button>
+    </mat-card-actions>
+  } @else if (account === null && token !== null) {
+    <mat-card-actions>
+      <button mat-button routerLink="/" i18n="@@authorize.button.login">Login</button>
+      <button mat-button routerLink="/account/create" i18n="@@authorize.button.register">Register</button>
+    </mat-card-actions>
+  }
+</mat-card>
