@@ -4,32 +4,33 @@ from datetime import datetime
 from datetime import timedelta
 from dotenv import load_dotenv
 from flask import Flask
+from flask import Response
 from flask import g
 from flask import render_template
-from flask import Response
 from flask import request
 from flask import send_from_directory
 from flask import session
 from hashlib import pbkdf2_hmac
 from hashlib import sha3_512
-from ipaddress import ip_address
 from ipaddress import IPv4Address
 from ipaddress import IPv6Address
+from ipaddress import ip_address
 from json import dumps as json_dumps
 from logging import FileHandler as LogFileHandler
 from logging import Formatter as LogFormatter
 from logging import INFO as LOG_INFO  # noqa
 from logging import basicConfig as log_basicConfig
 from logging import getLogger as GetLogger
+from logging import log as logging_log
 from os import environ
 from os import urandom
 from os.path import exists
 from os.path import join
-from pyotp import random_base32 as totp_random_base32
 from pyotp import TOTP
+from pyotp import random_base32 as totp_random_base32
 from requests import request as requests_send
-from sqlite3 import connect as sqlite_connect
 from sqlite3 import Connection as SQLite_Connection
+from sqlite3 import connect as sqlite_connect
 
 
 load_dotenv()
@@ -250,7 +251,7 @@ def r_api_v1_account_create():
     data = dict(request.get_json(force=True, silent=True))
     if (data is None) or (not isinstance(data, dict)):
         return {'error': 'Invalid request'}, 400
-    if not all(data.get(i, '') for i in ['firstName', 'lastName', 'email', 'hash', 'salt', 'dateOfBirth', 'title', 'gender', 'country', 'legalNameDifferent', 'legalFirstName', 'legalLastName', 'legalGender', 'additionalInformation', 'cipher', 'totp']):
+    if not all(data.get(i, '') != '' for i in ['firstName', 'lastName', 'email', 'hash', 'salt', 'dateOfBirth', 'title', 'gender', 'country', 'legalNameDifferent', 'legalFirstName', 'legalLastName', 'legalGender', 'additionalInformation', 'cipher', 'totp']):
         return {'error': 'Invalid request'}, 400
     data['ip'] = request.access_route[-1]
     data['browser'] = extract_browser(request.user_agent)
@@ -267,18 +268,22 @@ def r_api_v1_account_login():
     if not all(data.get(i, '') for i in ['email', 'code', 'password']):
         return {'error': 'Invalid request'}, 400
     error_message = {'error': 'e-mail not found, incorrect password or TOTP mismatch'}, 400
-    result = query_db('SELECT totp, hash, salt, cipher FROM users WHERE email=?', (data['email']), one=True)
+    result = query_db('SELECT totp, hash, salt, cipher FROM users WHERE email=?', (data['email'],), one=True)
     if not result:
+        logging_log(LOG_INFO, f"No user with email `{data['email']}` was found.")
         return error_message
-    if pbkdf2_hmac('sha3_512', data['password'].encode(), urlsafe_b64decode(result[2]), 100000) != result[1]:
+    hashed = urlsafe_b64encode(pbkdf2_hmac('sha256', data['password'].encode(), urlsafe_b64decode(result[2]), 100000)).decode('utf-8').replace('=', '')
+    if hashed != result[1]:
+        logging_log(LOG_INFO, f"A wrong password was entered for the user `{data['email']}`: `{hashed} != {result[1]}`")
         return error_message
     try:
         totp = TOTP(result[0])
         is_valid = totp.verify(data['code'])
     except Exception as e:
-        print(e)
+        logging_log(LOG_INFO, e)
         return error_message
     if not is_valid:
+        logging_log(LOG_INFO, f"A wrong TOTP code was entered for the user `{data['email']}`.")
         return error_message
     return {
         'success': 'success',

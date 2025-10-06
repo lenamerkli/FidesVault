@@ -283,9 +283,6 @@ export class Create implements OnInit, AfterViewInit {
     // Set up autofill logic for legal name fields
     this.setupLegalNameAutofill();
 
-    // Set up password confirmation validation
-    this.setupPasswordConfirmation();
-
     // Set up password strength checking
     this.setupPasswordStrengthChecking();
 
@@ -323,26 +320,7 @@ export class Create implements OnInit, AfterViewInit {
     return null;
   }
 
-  private setupPasswordConfirmation(): void {
-    const passwordControl = this.accountForm.get('password');
-    const repeatPasswordControl = this.accountForm.get('repeatPassword');
 
-    if (passwordControl && repeatPasswordControl) {
-      // Watch for changes to password and validate repeat password
-      passwordControl.valueChanges.subscribe(() => {
-        if (repeatPasswordControl.value) {
-          repeatPasswordControl.updateValueAndValidity();
-        }
-      });
-
-      // Watch for changes to repeat password and validate match
-      repeatPasswordControl.valueChanges.subscribe(() => {
-        if (passwordControl.value) {
-          repeatPasswordControl.updateValueAndValidity();
-        }
-      });
-    }
-  }
 
   private setupPasswordStrengthChecking(): void {
     const passwordControl = this.accountForm.get('password');
@@ -484,6 +462,7 @@ export class Create implements OnInit, AfterViewInit {
   }
 
   onSubmit(): void {
+    console.log('onSubmit()')
     if (this.accountForm.valid && ['strong', 'acceptable'].includes(this.passwordStrength)) {
       const formData: AccountFormData = this.accountForm.value;
       this.handleFormSubmission(formData).then();
@@ -493,6 +472,7 @@ export class Create implements OnInit, AfterViewInit {
   }
 
   private async handleFormSubmission(formData: AccountFormData): Promise<void> {
+    console.log('handleFormSubmission()')
     let data = {
       firstName: formData.firstName,
       lastName: formData.lastName,
@@ -509,6 +489,7 @@ export class Create implements OnInit, AfterViewInit {
     const password = formData.password;
     this.http.post(API_BASE_URL + '/api/v1/account/create/salt', {}, { responseType: 'text' }).subscribe({
       next: async (salt) => {
+        console.log('salt received')
         const hash = await pbkdf2HmacUrlSafe(password, salt, 100000, 256);
         const key = await pbkdf2HmacUrlSafe('o7C@' + password + 'Lö§s', salt, 152734, 256);
         const f = await Fernet.getInstance(key);
@@ -526,10 +507,18 @@ export class Create implements OnInit, AfterViewInit {
           legalLastName: data.legalLastName,
           legalGender: data.legalGender,
           additionalInformation: (formData.identityVerificationInfo?.length ?? 0) > 0 ? formData.identityVerificationInfo : 'None',
-          password: hash,
+          hash: hash,
           cipher: cipher,
           salt: salt,
-        }));
+          totp: this.totp,
+        })).subscribe({
+          next: value => {
+            console.log(value);
+          },
+          error: err => {
+            console.log(err);
+          }
+        });
       },
       error: (error) => {
         console.error('Error retrieving salt:', error);

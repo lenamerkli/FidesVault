@@ -151,7 +151,7 @@
           @if (accountForm.get('repeatPassword')?.hasError('required')) {
             <mat-error i18n="@@createAccount.repeatPassword.required">Please repeat your password</mat-error>
           }
-          @if (accountForm.get('repeatPassword')?.hasError('passwordMismatch')) {
+          @if (accountForm.hasError('passwordMismatch')) {
             <mat-error i18n="@@createAccount.repeatPassword.mismatch">Passwords do not match</mat-error>
           }
         </mat-form-field>
