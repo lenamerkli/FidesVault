@@ -24,3 +24,11 @@ export function uint8ArrayToBase64url(bytes: Uint8Array): string {
     base64 = base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
     return base64;
 }
+
+export function base64_decode(input: string): string {
+    return atob(input);
+}
+
+export function base64_encode(input: string): string {
+    return btoa(input);
+}

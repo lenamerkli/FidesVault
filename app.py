@@ -198,6 +198,27 @@ def extract_browser(agent):
     return f"{agent.platform}-{agent.browser}"
 
 
+def get_account():
+    if 'login' not in session:
+        return None
+    token = session['login']
+    result = query_db('SELECT email, valid, browser FROM login WHERE id=?', (token,), True)
+    if not result:
+        return None
+    if result[2] != extract_browser(request.user_agent):
+        return None
+    if get_current_time() >= result[1]:
+        return None
+    return result[0]
+
+
+def set_account(email: str):
+    token = rand_base64(64)
+    valid = (datetime.now() + timedelta(days=30)).strftime(DATE_FORMAT)
+    query_db('INSERT INTO login VALUES (?, ?, ?, ?)', (token, email, valid, extract_browser(request.user_agent)))
+    session['login'] = token
+
+
 def scan_request():
     ip = request.access_route[-1]
     score = query_db('SELECT score, ip FROM ips WHERE ip = ?', (ip,), True)
@@ -285,10 +306,74 @@ def r_api_v1_account_login():
     if not is_valid:
         logging_log(LOG_INFO, f"A wrong TOTP code was entered for the user `{data['email']}`.")
         return error_message
+    set_account(data['email'])
     return {
         'success': 'success',
         'salt': result[2],
         'cipher': result[3],
+    }
+
+
+@app.route('/api/v1/account/check', methods=['GET', 'POST'])
+def r_api_v1_account_check():
+    email = get_account()
+    if email is None:
+        email = ''
+    return {'email': email}
+
+
+@app.route('/api/v1/account/cipher', methods=['GET', 'POST'])
+def r_api_v1_account_cipher():
+    email = get_account()
+    if email is None:
+        return {'error': 'Invalid email'}, 400
+    result = query_db('SELECT cipher, salt FROM users WHERE email=?', (email,), one=True)
+    if not result:
+        return {'error': 'Invalid email'}, 400
+    return {'cipher': result[0], 'salt': result[1]}
+
+
+@app.route('/api/v1/send', methods=['POST'])
+def r_api_v1_account_send():
+    email = get_account()
+    if email is None:
+        return {'error': 'Not logged in'}, 400
+    data = request.get_json(force=True, silent=True)
+    if not data or 'data' not in data:
+        return {'error': 'Invalid data'}, 400
+    logging_log(LOG_INFO, f"Data sent by {email}: `{data['data']}`")
+    return {'success': 'Data sent'}, 200
+
+
+@app.route('/api/v1/email/authorize', methods=['POST'])
+def r_api_v1_email_authorize():
+    data = request.get_json(force=True, silent=True)
+    if not data or not isinstance(data, dict):
+        return {'error': 'Invalid data'}, 400
+    if not all(data.get(i, '') != '' for i in ['url', 'token']):
+        return {'error': 'Invalid data'}, 400
+    email = get_account()
+    if email is None:
+        return {'error': 'Not logged in'}, 400
+    req = requests_send(
+        method='POST',
+        url=data['url'],
+        headers={
+            'Content-Type': 'application/json',
+        },
+        data=json_dumps({
+            'mail': email,
+            'token': data['token'],
+        }),
+    )
+    if req.status_code != 200:
+        return {
+            'error': 'request error',
+            'message': 'Request failed.',
+        }, 500
+    return {
+        'status': 'success',
+        'message': 'Successfully authorized.',
     }
 
 

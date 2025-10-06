@@ -1,0 +1,43 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title i18n="@@home.sendData.title">Send Data</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="sendForm" (ngSubmit)="onSend()">
+      <mat-form-field appearance="outline">
+        <mat-label i18n="@@home.sendData.label">Data to send</mat-label>
+        <input matInput formControlName="data" required>
+        @if (sendForm.get('data')?.invalid && sendForm.get('data')?.touched) {
+          <mat-error i18n="@@home.sendData.error.required">
+            Please enter data to send.
+          </mat-error>
+        }
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit" [disabled]="sendForm.invalid" i18n="@@home.sendData.button.submit">Send</button>
+    </form>
+  </mat-card-content>
+</mat-card>
+
+@if (accountInfo) {
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title i18n="@@home.personalInfo.title">Personal Information</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p><strong i18n="@@home.personalInfo.firstName">First Name:</strong> {{ accountInfo.firstName }}</p>
+      <p><strong i18n="@@home.personalInfo.lastName">Last Name:</strong> {{ accountInfo.lastName }}</p>
+      <p><strong i18n="@@home.personalInfo.email">Email:</strong> {{ accountInfo.email }}</p>
+      <p><strong i18n="@@home.personalInfo.dateOfBirth">Date of Birth:</strong> {{ accountInfo.dateOfBirth }}</p>
+      <p><strong i18n="@@home.personalInfo.titleLabel">Title:</strong> {{ accountInfo.title }}</p>
+      <p><strong i18n="@@home.personalInfo.gender">Gender:</strong> {{ accountInfo.gender }}</p>
+      <p><strong i18n="@@home.personalInfo.country">Country:</strong> {{ accountInfo.country }}</p>
+      <p><strong i18n="@@home.personalInfo.legalNameDifferent">Legal Name Different:</strong> {{ accountInfo.legalNameDifferent ? 'Yes' : 'No' }}</p>
+      @if (accountInfo.legalNameDifferent) {
+        <p><strong i18n="@@home.personalInfo.legalFirstName">Legal First Name:</strong> {{ accountInfo.legalFirstName }}</p>
+        <p><strong i18n="@@home.personalInfo.legalLastName">Legal Last Name:</strong> {{ accountInfo.legalLastName }}</p>
+        <p><strong i18n="@@home.personalInfo.legalGender">Legal Gender:</strong> {{ accountInfo.legalGender }}</p>
+      }
+    </mat-card-content>
+  </mat-card>
+}

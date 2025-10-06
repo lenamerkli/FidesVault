@@ -528,6 +528,262 @@
           <context context-type="linenumber">31</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="login.password.label" datatype="html">
+        <source>Password</source>
+        <target>Mot de passe</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/login/login.html</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="unlock.title" datatype="html">
+        <source>Unlock FidesVault</source>
+        <target>Déverrouiller FidesVault</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/login/login.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="login.password.error.required" datatype="html">
+        <source> Please enter your password. </source>
+        <target> Veuillez entrer votre mot de passe. </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/login/login.html</context>
+          <context context-type="linenumber">27,28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="unlock.button.submit" datatype="html">
+        <source>Unlock</source>
+        <target>Déverrouiller</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/login/login.html</context>
+          <context context-type="linenumber">48</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="home.sendData.title" datatype="html">
+        <source>Send Data</source>
+        <target>Envoyer des données</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/home/home.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="home.sendData.label" datatype="html">
+        <source>Data to send</source>
+        <target>Données à envoyer</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/home/home.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="home.sendData.button.submit" datatype="html">
+        <source>Send</source>
+        <target>Envoyer</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/home/home.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="home.sendData.error.required" datatype="html">
+        <source> Please enter data to send. </source>
+        <target> Veuillez entrer des données à envoyer. </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/home/home.html</context>
+          <context context-type="linenumber">11,12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="home.personalInfo.title" datatype="html">
+        <source>Personal Information</source>
+        <target>Informations personnelles</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/home/home.html</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="home.personalInfo.firstName" datatype="html">
+        <source>First Name:</source>
+        <target>Prénom :</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/home/home.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="home.personalInfo.lastName" datatype="html">
+        <source>Last Name:</source>
+        <target>Nom de famille :</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/home/home.html</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="home.personalInfo.email" datatype="html">
+        <source>Email:</source>
+        <target>E-mail :</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/home/home.html</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="home.personalInfo.dateOfBirth" datatype="html">
+        <source>Date of Birth:</source>
+        <target>Date de naissance :</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/home/home.html</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="home.personalInfo.titleLabel" datatype="html">
+        <source>Title:</source>
+        <target>Titre :</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/home/home.html</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="home.personalInfo.gender" datatype="html">
+        <source>Gender:</source>
+        <target>Sexe :</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/home/home.html</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="home.personalInfo.country" datatype="html">
+        <source>Country:</source>
+        <target>Pays :</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/home/home.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="home.personalInfo.legalNameDifferent" datatype="html">
+        <source>Legal Name Different:</source>
+        <target>Nom légal différent :</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/home/home.html</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="home.personalInfo.legalFirstName" datatype="html">
+        <source>Legal First Name:</source>
+        <target>Prénom légal :</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/home/home.html</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="home.personalInfo.legalLastName" datatype="html">
+        <source>Legal Last Name:</source>
+        <target>Nom de famille légal :</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/home/home.html</context>
+          <context context-type="linenumber">38</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="home.personalInfo.legalGender" datatype="html">
+        <source>Legal Gender:</source>
+        <target>Sexe légal :</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/home/home.html</context>
+          <context context-type="linenumber">39</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="authorize.title" datatype="html">
+        <source>Authorize Application</source>
+        <target>Autoriser l'application</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/email/authorize/authorize.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="authorize.error" datatype="html">
+        <source>An error occurred. Please try again with a different link or contact the administrator of the website you want to authorize.</source>
+        <target>Une erreur s'est produite. Veuillez réessayer avec un autre lien ou contacter l'administrateur du site web que vous souhaitez autoriser.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/email/authorize/authorize.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="authorize.loading" datatype="html">
+        <source>Please wait a moment while FidesVault loads.</source>
+        <target>Veuillez patienter un instant pendant que FidesVault se charge.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/email/authorize/authorize.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="authorize.confirm" datatype="html">
+        <source>Do you really want to authorize the application {$START_ITALIC_TEXT}{$START_BOLD_TEXT}{$INTERPOLATION}{$CLOSE_BOLD_TEXT}{$CLOSE_ITALIC_TEXT} and connect it to your account? Your email address will be shared.</source>
+        <target>Voulez-vous vraiment autoriser l'application {$START_ITALIC_TEXT}{$START_BOLD_TEXT}{$INTERPOLATION}{$CLOSE_BOLD_TEXT}{$CLOSE_ITALIC_TEXT} et la connecter à votre compte ? Votre adresse e-mail sera partagée.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/email/authorize/authorize.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="authorize.check" datatype="html">
+        <source>Make sure to check that you received this link from the respective website.</source>
+        <target>Assurez-vous de vérifier que vous avez reçu ce lien du site web respectif.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/email/authorize/authorize.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="authorize.notLoggedIn" datatype="html">
+        <source>You must be logged in to authorize applications like {$START_ITALIC_TEXT}{$INTERPOLATION}{$CLOSE_ITALIC_TEXT}.</source>
+        <target>Vous devez être connecté pour autoriser des applications comme {$START_ITALIC_TEXT}{$INTERPOLATION}{$CLOSE_ITALIC_TEXT}.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/email/authorize/authorize.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="authorize.noAccount" datatype="html">
+        <source>If you do not have an account yet, please register.</source>
+        <target>Si vous n'avez pas encore de compte, veuillez vous inscrire.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/email/authorize/authorize.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="authorize.retry" datatype="html">
+        <source>After logging in, please open the link again.</source>
+        <target>Après vous être connecté, veuillez ouvrir le lien à nouveau.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/email/authorize/authorize.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="authorize.button.authorize" datatype="html">
+        <source>Authorize {$INTERPOLATION}</source>
+        <target>Autoriser {$INTERPOLATION}</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/email/authorize/authorize.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="authorize.button.cancel" datatype="html">
+        <source>Cancel</source>
+        <target>Annuler</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/email/authorize/authorize.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="authorize.button.login" datatype="html">
+        <source>Login</source>
+        <target>Se connecter</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/email/authorize/authorize.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="authorize.button.register" datatype="html">
+        <source>Register</source>
+        <target>S'inscrire</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/email/authorize/authorize.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
     </body>
   </file>
 </xliff>

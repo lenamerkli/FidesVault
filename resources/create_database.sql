@@ -13,4 +13,10 @@ CREATE TABLE IF NOT EXISTS users (
     salt TEXT NOT NULL,
     totp TEXT NOT NULL,
     cipher TEXT NOT NULL
-)
+);
+CREATE TABLE IF NOT EXISTS login (
+    id TEXT PRIMARY KEY,
+    email TEXT NOT NULL,
+    valid TEXT NOT NULL,
+    browser TEXT NOT NULL
+);
