@@ -38,6 +38,12 @@ def main():
                 Path('build').joinpath(file_path.relative_to('')).parent.mkdir(parents=True, exist_ok=True)
                 copy(file_path, Path('build').joinpath(file_path.relative_to('.')))
     rmtree('./web/dist', ignore_errors=True)
+    # replace string inside `./build/.env`
+    with open('./build/.env', 'r') as f:
+        content = f.read()
+    content = content.replace('=dev', '=prod')
+    with open('./build/.env', 'w') as f:
+        f.write(content)
     run(['ng', 'build', '--configuration', 'production'], cwd=Path('web').absolute(), check=True, stdout=None)
     sleep(1)
     Path('build/web').mkdir(parents=True, exist_ok=True)
