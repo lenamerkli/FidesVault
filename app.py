@@ -399,10 +399,13 @@ def error_handler_404(*_, **__):
         path = request.path
         if path and path.startswith('/'):
             path = path[1:]
-        if path != '' and exists(join(app.root_path, 'build', path)):
-            return send_from_directory(join(app.root_path, 'build'), path), 200
+        if path != '' and exists(join(app.root_path, 'web', path)):
+            return send_from_directory(join(app.root_path, 'web'), path), 200
         else:
-            return send_from_directory(join(app.root_path, 'build'), 'index.html'), 200
+            language = request.accept_languages.best_match(['en-CH', 'de-CH', 'fr-CH'])
+            if language is None:
+                language = 'en-CH'
+            return send_from_directory(join(app.root_path, 'web', language), 'index.html'), 200
 
 
 if __name__ == '__main__':
